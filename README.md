@@ -1,4 +1,4 @@
-# 💊 Medrax - Pharmacy Delivery Platform
+# 💊 Medrx - Pharmacy Delivery Platform
 
 ## Full Stack Challenge – Online Pharmacy & Home Delivery
 
@@ -261,5 +261,6 @@ Ready to build the future of pharmacy delivery? **Medrax** represents a $3.6B ma
 ---
 
 *Medrax - Making Healthcare Accessible, One Delivery at a Time* 💊🚚
+
 
 **Reference:** [Apollo Pharmacy](https://www.apollopharmacy.in/) | **Built for:** Pharmacy Delivery Platform Hackathon
