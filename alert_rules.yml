@@ -1,0 +1,133 @@
+groups:
+  - name: medrx_alerts
+    rules:
+      # High Error Rate
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: critical
+          service: medrx
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is above 10% for {{ $labels.job }} service"
+
+      # High Response Time
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: medrx
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is above 2s for {{ $labels.job }}"
+
+      # Database Connection Issues
+      - alert: DatabaseDown
+        expr: mongodb_up == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: database
+        annotations:
+          summary: "MongoDB is down"
+          description: "MongoDB instance {{ $labels.instance }} is not responding"
+
+      # Redis Connection Issues
+      - alert: RedisDown
+        expr: redis_up == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cache
+        annotations:
+          summary: "Redis is down"
+          description: "Redis instance {{ $labels.instance }} is not responding"
+
+      # High Memory Usage
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is above 85% on {{ $labels.instance }}"
+
+      # High CPU Usage
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage is above 80% on {{ $labels.instance }}"
+
+      # Disk Space Low
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 15
+        for: 5m
+        labels:
+          severity: critical
+          service: system
+        annotations:
+          summary: "Low disk space"
+          description: "Disk space is below 15% on {{ $labels.instance }}"
+
+      # Service Down
+      - alert: ServiceDown
+        expr: up == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service is down"
+          description: "{{ $labels.job }} service is down on {{ $labels.instance }}"
+
+      # SSL Certificate Expiry
+      - alert: SSLCertificateExpiry
+        expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 7
+        for: 1h
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "SSL certificate expiring soon"
+          description: "SSL certificate for {{ $labels.instance }} expires in less than 7 days"
+
+      # Failed Payment Rate
+      - alert: HighPaymentFailureRate
+        expr: rate(payment_failed_total[5m]) / rate(payment_total[5m]) > 0.05
+        for: 3m
+        labels:
+          severity: critical
+          service: payment
+        annotations:
+          summary: "High payment failure rate"
+          description: "Payment failure rate is above 5%"
+
+      # Order Processing Delays
+      - alert: OrderProcessingDelay
+        expr: avg(order_processing_time_seconds) > 300
+        for: 5m
+        labels:
+          severity: warning
+          service: orders
+        annotations:
+          summary: "Order processing delays"
+          description: "Average order processing time is above 5 minutes"
+
+      # User Registration Anomaly
+      - alert: UnusualRegistrationRate
+        expr: rate(user_registrations_total[1h]) > 100
+        for: 10m
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "Unusual user registration rate"
+          description: "User registration rate is unusually high: {{ $value }} registrations/hour"
