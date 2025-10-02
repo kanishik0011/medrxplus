@@ -6,7 +6,7 @@
 
 ## 🎯 Project Overview
 
-**Medrax** is a comprehensive pharmacy delivery platform that revolutionizes how people access medicines and healthcare products. Built with modern full-stack technology, it provides secure medicine ordering, prescription verification, and reliable home delivery services.
+**Medrx** is a comprehensive pharmacy delivery platform that revolutionizes how people access medicines and healthcare products. Built with modern full-stack technology, it provides secure medicine ordering, prescription verification, and reliable home delivery services.
 
 ### 🏥 **Inspired by Apollo Pharmacy, Enhanced for the Future**
 
@@ -264,3 +264,4 @@ Ready to build the future of pharmacy delivery? **Medrax** represents a $3.6B ma
 
 
 **Reference:** [Apollo Pharmacy](https://www.apollopharmacy.in/) | **Built for:** Pharmacy Delivery Platform Hackathon
+
